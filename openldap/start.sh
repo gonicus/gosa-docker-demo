@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # Check for base ldif container
 echo -n "[SLAPD] checking for base configuration: "
@@ -21,4 +21,4 @@ else
 fi
 
 chown -R $LDAP_USER:$LDAP_GROUP /var/lib/ldap
-exec /usr/sbin/slapd -u openldap
+exec /usr/sbin/slapd -u openldap -d 256
