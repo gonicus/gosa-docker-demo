@@ -16,9 +16,6 @@ services:
     ports:
       - "389:389"
       - "636:636"
-    #environment:
-    #  - LDAP_USER=${USER}
-    #  - LDAP_GROUP=${USER}
     volumes:
       - ./config/ldap/db:/var/lib/ldap
       - ./config/ldap/etc:/etc/ldap

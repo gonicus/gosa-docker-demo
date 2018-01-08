@@ -10,7 +10,6 @@ RUN apt-get update && \
     rm -rf /etc/ldap /var/lib/ldap && \
     mkdir /etc/ldap /var/lib/ldap /var/lib/accesslog && \
     cp /usr/share/doc/slapd/examples/DB_CONFIG /var/lib/accesslog/DB_CONFIG && \
-    cp /usr/share/doc/slapd/examples/DB_CONFIG /var/lib/ldap/DB_CONFIG && \
     chown -R openldap:openldap /var/lib/ldap /var/lib/accesslog && \
     apt-get clean
 

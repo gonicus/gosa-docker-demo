@@ -6,6 +6,8 @@ if [ ! -f /var/lib/ldap/alock ]; then
     chown -R root:$LDAP_GROUP /etc/ldap
 
     if [ -f /provision/base.ldif ]; then
+        cp /usr/share/doc/slapd/examples/DB_CONFIG /var/lib/ldap/DB_CONFIG
+
         slapadd -l /provision/base.ldif -b dc=example,dc=net &> /tmp/slapadd.log
 
         if [ $? -ne 0 ]; then
