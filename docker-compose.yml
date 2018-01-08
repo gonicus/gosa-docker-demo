@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+#  backend:
+#    build: .
+#    ports:
+#     - 8080
+#    links:
+#     - openldap
+#    depends_on:
+#     - openldap
+
+  openldap:
+    build: openldap
+    container_name: openldap
+    ports:
+      - "389:389"
+      - "636:636"
+    #environment:
+    #  - LDAP_USER=${USER}
+    #  - LDAP_GROUP=${USER}
+    volumes:
+      - ./config/ldap/db:/var/lib/ldap
+      - ./config/ldap/etc:/etc/ldap
+      - ./config/ldap/ldif:/provision
+
+#  mongodb:
+#    image: mongo:latest
+#    ports:
+#     - 127.0.0.1:27017:27017
+#    environment:
+#     - MONGO_DATA_DIR=/data/db
+#     - MONGO_LOG_DIR=/dev/null
+#    volumes:
+#     - ./data/db:/data/db
