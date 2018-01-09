@@ -2,31 +2,47 @@ version: '2'
 
 services:
 #  backend:
-#    build: .
+#    build: container/gosa
 #    ports:
 #     - 8080
 #    links:
 #     - openldap
+#     - db
+#     - mqtt
 #    depends_on:
 #     - openldap
-
-  openldap:
-    build: openldap
-    container_name: openldap
-    ports:
-      - "389:389"
-      - "636:636"
-    volumes:
-      - ./config/ldap/db:/var/lib/ldap
-      - ./config/ldap/etc:/etc/ldap
-      - ./config/ldap/ldif:/provision
-
-#  mongodb:
-#    image: mongo:latest
+#     - db
+#     - mqtt
+#
+#  openldap:
+#    build: container/openldap
+#    container_name: openldap
 #    ports:
-#     - 127.0.0.1:27017:27017
-#    environment:
-#     - MONGO_DATA_DIR=/data/db
-#     - MONGO_LOG_DIR=/dev/null
+#      - 389
+#      - 636
 #    volumes:
-#     - ./data/db:/data/db
+#      - ./config/ldap/db:/var/lib/ldap
+#      - ./config/ldap/etc:/etc/ldap
+#      - ./config/ldap/ldif:/provision
+#
+#  db:
+#    image: postgres
+#    restart: always
+#    environment:
+#      POSTGRES_PASSWORD: secret
+#    volumes:
+#      - ./config/postgresql/init:/docker-entrypoint-initdb.d
+#      - ./config/postgresql/db:/var/lib/postgresql/data
+#    ports:
+#      - 5432
+
+  mqtt:
+    build: container/mosquitto
+    restart: always
+    environment:
+      HTTP_AUTH_HOST: 192.168.1.1
+    volumes:
+      - ./config/mosquitto:/provision/mosquitto
+    ports:
+      - 1883
+      - 9001
