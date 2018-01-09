@@ -11,7 +11,7 @@ if [ -d /provision/mosquitto ]; then
         # Hostname or IP?
         IP=$HTTP_AUTH_HOST
         if [[ ! $IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            IP=$(host $HTTP_AUTH_HOST | awk '/has address/ { print $4 }' | head -n1)
+            IP=$(getent hosts $HTTP_AUTH_HOST | cut -d\  -f1 | head -n1)
         fi
 
         for cfg in /etc/mosquitto/conf.d/*.conf; do
@@ -24,6 +24,9 @@ else
     echo "not found"
 fi
 
-/etc/init.d/mosquitto start
-#exec tail -f /var/log/mosquitto/mosquitto.log
-exec /bin/bash
+echo "-----"
+echo "Host: $HTTP_AUTH_HOST"
+getent hosts $HTTP_AUTH_HOST
+echo "-----"
+
+exec /usr/sbin/mosquitto -v -c /etc/mosquitto/mosquitto.conf
