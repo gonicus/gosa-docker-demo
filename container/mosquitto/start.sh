@@ -12,6 +12,13 @@ if [ -d /provision/mosquitto ]; then
         IP=$HTTP_AUTH_HOST
         if [[ ! $IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             IP=$(getent hosts $HTTP_AUTH_HOST | cut -d\  -f1 | head -n1)
+
+            # Wait until the name resolves
+            while [ -z "$IP" ]; do
+                sleep .5
+                echo -n "."
+                IP=$(getent hosts $HTTP_AUTH_HOST | cut -d\  -f1 | head -n1)
+            done
         fi
 
         for cfg in /etc/mosquitto/conf.d/*.conf; do

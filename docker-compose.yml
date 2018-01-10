@@ -55,8 +55,8 @@ services:
      - backbone
     environment:
       HTTP_AUTH_HOST: gosa
-#    volumes:
-#      - ./config/mosquitto:/provision/mosquitto
+    volumes:
+      - ./config/mosquitto:/provision/mosquitto
     ports:
       - "1883:1883"
       - "8883:8883"
