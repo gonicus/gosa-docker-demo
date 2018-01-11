@@ -39,6 +39,7 @@ RUN source ~/bin/activate && \
     cd ~/src/plugins/gui/frontend/gosa && \
     python2 generate.py build && \
     cd ~/src/plugins/gui && \
-    ./setup.py install
+    ./setup.py install && \
+    rm -rf ~/src
 
 ENTRYPOINT /opt/gosa/start.sh

@@ -10,13 +10,13 @@ host = 0.0.0.0
 port = 8000
 
 [ldap]
-url = ldap://openldap/dc=example,dc=net
+url = ldap://openldap-docker/dc=example,dc=net
 bind-dn = cn=ldapadmin,dc=example,dc=net
 bind-secret = secret
 pool-size = 10
 
 [backend-database]
-database = postgresql://admin:secret@db:5432/gosa
+database = postgresql://admin:secret@db-docker:5432/gosa
 
 [backend-json]
 database-file = /tmp/gosa.json
@@ -32,17 +32,19 @@ image-path = /tmp/images
 # chown user menu after generation to allow user to change the entries)
 # chown-menu = false
 
+[cups]
+spool = /tmp/spool
+server = cups-docker
+port = 8631
+
 [gui]
 debug = false
 
 [mqtt]
-host = mqtt
+host = mqtt-docker
 
 [webhooks]
 ldap_monitor_token = 9d6250c0-6413-4b1e-98d9-7b763472962a
-
-[cups]
-spool = /tmp/spool
 
 [foreman]
 #host-rdn =

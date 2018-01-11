@@ -3,8 +3,7 @@ version: '2.2'
 services:
   gosa:
     build: container/gosa
-    container_name: gosa
-    hostname: gosa
+    container_name: gosa-docker
     ports:
      - "8000:8000"
     networks:
@@ -13,14 +12,14 @@ services:
      - openldap
      - db
      - mqtt
+     - cups
     volumes:
       - ./config/gosa:/etc/gosa
 
   openldap:
     build: container/openldap
     restart: always
-    hostname: openldap
-    container_name: openldap
+    container_name: openldap-docker
     networks:
      - backbone
     ports:
@@ -33,8 +32,7 @@ services:
 
   db:
     image: postgres
-    container_name: db
-    hostname: db
+    container_name: db-docker
     networks:
      - backbone
     restart: always
@@ -46,15 +44,25 @@ services:
     ports:
       - "5432:5432"
 
+  cups:
+    build: container/cups
+    container_name: cups-docker
+    networks:
+     - backbone
+    volumes:
+      - ./config/cups/cupsd.conf:/etc/cups/cupsd.conf
+    restart: always
+    ports:
+      - "8631:8631"
+
   mqtt:
     build: container/mosquitto
-    container_name: mqtt
-    hostname: mqtt
+    container_name: mqtt-docker
     restart: always
     networks:
      - backbone
     environment:
-      HTTP_AUTH_HOST: gosa
+      HTTP_AUTH_HOST: gosa-docker
     volumes:
       - ./config/mosquitto:/provision/mosquitto
     ports:

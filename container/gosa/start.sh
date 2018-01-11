@@ -1,5 +1,4 @@
 #!/bin/sh
-
+sleep 2
 source ./bin/activate
-gosa
-/bin/bash
+exec gosa
