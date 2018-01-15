@@ -1,4 +1,1 @@
 .*.swp
-*.local.yml
-.idea
-config/ldap/db

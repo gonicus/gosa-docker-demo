@@ -2,38 +2,69 @@ version: '2.2'
 
 services:
   gosa:
-    extends:
-      file: docker-compose.base.yml
-      service: gosa
+    build: container/gosa
+    container_name: gosa-docker
     ports:
      - "8000:8000"
-    
+    networks:
+     - backbone
+    depends_on:
+     - openldap
+     - db
+     - mqtt
+     - cups
+    volumes:
+      - ./config/gosa:/etc/gosa
+
   openldap:
-    extends:
-      file: docker-compose.base.yml
-      service: openldap
+    build: container/openldap
+    restart: always
+    container_name: openldap-docker
+    networks:
+     - backbone
     ports:
       - "389:389"
       - "636:636"
+    volumes:
+      - ./config/ldap/db:/var/lib/ldap
+      - ./config/ldap/etc:/etc/ldap
+      - ./config/ldap/ldif:/provision
 
   db:
-    extends:
-      file: docker-compose.base.yml
-      service: db
+    image: postgres
+    container_name: db-docker
+    networks:
+     - backbone
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - ./config/postgresql/init:/docker-entrypoint-initdb.d
+      - ./config/postgresql/db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
   cups:
-    extends:
-      file: docker-compose.base.yml
-      service: cups
+    build: container/cups
+    container_name: cups-docker
+    networks:
+     - backbone
+    volumes:
+      - ./config/cups/cupsd.conf:/etc/cups/cupsd.conf
+    restart: always
     ports:
       - "8631:8631"
 
   mqtt:
-    extends:
-      file: docker-compose.base.yml
-      service: mqtt
+    build: container/mosquitto
+    container_name: mqtt-docker
+    restart: always
+    networks:
+     - backbone
+    environment:
+      HTTP_AUTH_HOST: gosa-docker
+    volumes:
+      - ./config/mosquitto:/provision/mosquitto
     ports:
       - "1883:1883"
       - "8883:8883"
