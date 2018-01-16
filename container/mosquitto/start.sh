@@ -9,20 +9,29 @@ if [ -d /provision/mosquitto ]; then
         echo -n "configured HTTP_AUTH_HOST, "
 
         # Hostname or IP?
-        IP=$HTTP_AUTH_HOST
+        saveIFS=$IFS
+        IFS=":"
+        parts=($HTTP_AUTH_HOST)
+        IFS=$saveIFS
+        HOST=${parts[0]}
+        PORT=8050
+        if [[ "${#parts[@]}" == 2 ]]; then
+            PORT=${parts[1]}
+        fi
         if [[ ! $IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            IP=$(getent hosts $HTTP_AUTH_HOST | cut -d\  -f1 | head -n1)
+            IP=$(getent hosts $HOST | cut -d\  -f1 | head -n1)
 
             # Wait until the name resolves
             while [ -z "$IP" ]; do
                 sleep .5
                 echo -n "."
-                IP=$(getent hosts $HTTP_AUTH_HOST | cut -d\  -f1 | head -n1)
+                IP=$(getent hosts $HOST | cut -d\  -f1 | head -n1)
             done
         fi
 
         for cfg in /etc/mosquitto/conf.d/*.conf; do
             sed -i "s/%HOST_IP%/$IP/" $cfg
+            sed -i "s/%HOST_PORT%/$PORT/" $cfg
         done
     fi
 
