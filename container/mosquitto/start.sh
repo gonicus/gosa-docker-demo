@@ -8,16 +8,12 @@ if [ -d /provision/mosquitto ]; then
     if [ "$HTTP_AUTH_HOST" != "" ]; then
         echo -n "configured HTTP_AUTH_HOST, "
 
+        # Split host and optional port
+        temp=(${HTTP_AUTH_HOST//:/ })
+        HOST=${temp[0]}
+        PORT=${temp[1]:-8000}
+
         # Hostname or IP?
-        saveIFS=$IFS
-        IFS=":"
-        parts=($HTTP_AUTH_HOST)
-        IFS=$saveIFS
-        HOST=${parts[0]}
-        PORT=8050
-        if [[ "${#parts[@]}" == 2 ]]; then
-            PORT=${parts[1]}
-        fi
         if [[ ! $IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             IP=$(getent hosts $HOST | cut -d\  -f1 | head -n1)
 
@@ -39,10 +35,5 @@ if [ -d /provision/mosquitto ]; then
 else
     echo "not found"
 fi
-
-echo "-----"
-echo "Host: $HTTP_AUTH_HOST"
-getent hosts $HTTP_AUTH_HOST
-echo "-----"
 
 exec /usr/sbin/mosquitto -v -c /etc/mosquitto/mosquitto.conf
