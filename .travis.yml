@@ -10,28 +10,36 @@ env:
 
 before_install:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - |
-    TAG=""
-
-    if [ "$TRAVIS_BRANCH" == "master" ]; then
-      TAG="$container:latest"
-    elif [ "$TRAVIS_TAG" != "" ]; then
-      TAG="$container:$TRAVIS_TAG"
-    fi
 
 install:
   - |
-    if [ "$TAG" != "" ]; then
+    if [ "$TRAVIS_BRANCH" == "master" -o "$TRAVIS_TAG" != "" ]; then
       for container in containers/*; do
+        TAG=""
+
+        if [ "$TRAVIS_BRANCH" == "master" ]; then
+          TAG="$container:latest"
+        elif [ "$TRAVIS_TAG" != "" ]; then
+          TAG="$container:$TRAVIS_TAG"
+        fi
+
         docker build -t $TAG $container
-       done
+      done
     fi
 
 after_success:
   - |
-    if [ "$TAG" != "" ]; then
+    if [ "$TRAVIS_BRANCH" == "master" -o "$TRAVIS_TAG" != "" ]; then
       for container in containers/*; do
+        TAG=""
+
+        if [ "$TRAVIS_BRANCH" == "master" ]; then
+          TAG="$container:latest"
+        elif [ "$TRAVIS_TAG" != "" ]; then
+          TAG="$container:$TRAVIS_TAG"
+        fi
+
         docker tag $TAG $DOCKER_USERNAME/$TAG
         docker push $DOCKER_USERNAME/$TAG
-       done
+      done
     fi
