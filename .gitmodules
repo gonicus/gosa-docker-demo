@@ -1,3 +1,3 @@
 [submodule "container/gosa"]
 	path = container/gosa/src
-	url = git@github.com:gonicus/gosa.git
+	url = https://github.com/gonicus/gosa.git
