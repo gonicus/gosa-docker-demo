@@ -18,9 +18,9 @@ install:
         TAG=""
 
         if [ "$TRAVIS_BRANCH" == "master" ]; then
-          TAG="$container:latest"
+          TAG="$(basename $container):latest"
         elif [ "$TRAVIS_TAG" != "" ]; then
-          TAG="$container:$TRAVIS_TAG"
+          TAG="$(basename $container):$TRAVIS_TAG"
         fi
 
         docker build -t $TAG $container
@@ -34,9 +34,9 @@ after_success:
         TAG=""
 
         if [ "$TRAVIS_BRANCH" == "master" ]; then
-          TAG="$container:latest"
+          TAG="$(basename $container):latest"
         elif [ "$TRAVIS_TAG" != "" ]; then
-          TAG="$container:$TRAVIS_TAG"
+          TAG="$(basename $container):$TRAVIS_TAG"
         fi
 
         docker tag $TAG $DOCKER_USERNAME/$TAG
