@@ -1,0 +1,36 @@
+sudo: true
+dist: trusty
+language: node
+env:
+  global:
+    - secure: gsEBZ/kr/VcIprOaRjXUVOt/2c/E7AUmMrDK0coT+PAMxngWh9kvAeRkKpUHk0U6JzSXUadb6zWf0Scn5edmr2iI8bpG9esOfcp8+3MHbdFEjL7j18kYcKJh/bvHiSRFt1ZdYCyfXgkj//MOcxfTOay87oGZgshLLS36b032vIU+F7sUQKN3A3+kPr6BWb4zaHVBr5Qm3gQAyN9QNRl6+hpFvGjHXpJ55JuasdiUCreUqyS18j5JpjO+0R2gjIJeRzaJ9dkYXOehkvu3ZtIN5eNFsIQrhjY0Bn/dXPYC3hrexC0XDh4s+PWNVehhulAUwFb+dncZRrqZP3zac8JD4YWo2aHua+x7GzK+hGqMgGtGJoe0E5gtT105Igr/owwvAUkuLw6I5jYoNU9+0PxWPs2BXFoHXpppEoEXtRDXqUBjurGh2vvkEoz1mbvh7wZXiZABvRP8k7UWMUJKxwgUXxzYCD194PCc10q2bmTnKZ5rjNcHhXk/HFC+L/BgWjmT0JSNzZyLIh4IWcDtaj6oBS1Xtzib81oqERDwF7p5vDVIifuoZHk0W1RTiXpXlAPz0mLxl1UYaIHkWkBLDMDseaDsYrqhatQdlcRcpZACIf1c4GHWWmk08pXGV+MK2D/MaG+C03MNDE3OP/AiIOHy7+kDboV4TOK2pZFHK9I3Pto=
+    - secure: BgrDO0i6KXfOVBNLXH6VBCXnkpuslXOGVn7gbFu+ECfH+53DCMkD6148OtGY3CvQ2NAre0AUiVB6qSz0PLa/R4g98nFfTXhaMtNMz9WBJIGcyCPoQltjQWiT/EstaCbUY3bBbtgHp+s+fRyBke5nsVFF39YM1r5Hu2/kPJbeR1zI0N+B95pUbZ9wme0nXpowgeyvdSjSr54rqyhjbsHglSDVJ6h6w4v8HGAh9p1LSFSt98dUdreFoA052x3/bfGLZ/v59jMdr+iHBkSN/pGeyPnG5x9N0IyhKKX4uQJSriEGaH+U28hCcuUNK/UFuZU8e/yzLe5EPFN3+gZeKqBQtVxNllYtqDLXtMdJgr+sn3wKuELor4dWW5gBGuynLhmOUeYZ81t7liHwrtD7FKJVVeRJb7Yq2XwaCNKUn4rDy/LMxV6P7XbGsQHfk3z2urowhRmB0TDHKqC0X4qMX8HVxNtMWJm3WSunbWaNO1O0K8z+9LV5KJ30EWTNTbRAjIbitPEVsIuFgsAFuLCtFTMe5obwsOKKCZgVX6KXqcZGRgyWSHOi64pZv1DX71X0QaUkmmRDvBm0gbkL0GJ4keL/EQPO+WssmQGdyrcqHxlUTdYz3U6M5pSR4sL014z0HvbtWaRBTrRMqDV7Ayz+YEVYpUr2g93NAg3AEqPCu3jBS5s=
+
+
+before_install:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - |
+    TAG=""
+
+    if [ "$TRAVIS_BRANCH" == "master" ]; then
+      TAG="$container:latest"
+    elsif [ "$TRAVIS_TAG" != "" ]; then
+      TAG="$container:$TRAVIS_TAG"
+    fi
+
+install:
+  - |
+    if [ "$TAG" != "" ]; then
+      for container in containers/*; do
+        docker build -t $TAG $container
+       done
+    fi
+
+after_success:
+  - |
+    if [ "$TAG" != "" ]; then
+      for container in containers/*; do
+        docker tag $TAG $DOCKER_USERNAME/$TAG
+        docker push $DOCKER_USERNAME/$TAG
+       done
+    fi
