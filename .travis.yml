@@ -1,6 +1,8 @@
 sudo: true
 dist: trusty
-language: node
+language: node_js
+node_js:
+  - "8"
 env:
   global:
     - secure: gsEBZ/kr/VcIprOaRjXUVOt/2c/E7AUmMrDK0coT+PAMxngWh9kvAeRkKpUHk0U6JzSXUadb6zWf0Scn5edmr2iI8bpG9esOfcp8+3MHbdFEjL7j18kYcKJh/bvHiSRFt1ZdYCyfXgkj//MOcxfTOay87oGZgshLLS36b032vIU+F7sUQKN3A3+kPr6BWb4zaHVBr5Qm3gQAyN9QNRl6+hpFvGjHXpJ55JuasdiUCreUqyS18j5JpjO+0R2gjIJeRzaJ9dkYXOehkvu3ZtIN5eNFsIQrhjY0Bn/dXPYC3hrexC0XDh4s+PWNVehhulAUwFb+dncZRrqZP3zac8JD4YWo2aHua+x7GzK+hGqMgGtGJoe0E5gtT105Igr/owwvAUkuLw6I5jYoNU9+0PxWPs2BXFoHXpppEoEXtRDXqUBjurGh2vvkEoz1mbvh7wZXiZABvRP8k7UWMUJKxwgUXxzYCD194PCc10q2bmTnKZ5rjNcHhXk/HFC+L/BgWjmT0JSNzZyLIh4IWcDtaj6oBS1Xtzib81oqERDwF7p5vDVIifuoZHk0W1RTiXpXlAPz0mLxl1UYaIHkWkBLDMDseaDsYrqhatQdlcRcpZACIf1c4GHWWmk08pXGV+MK2D/MaG+C03MNDE3OP/AiIOHy7+kDboV4TOK2pZFHK9I3Pto=
