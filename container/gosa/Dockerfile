@@ -9,7 +9,7 @@ RUN apt-get update && \
         python3-zope.interface python3-babel python3-openssl python3-sqlalchemy python3-lxml \
         python3-dnspython python3-cryptography python3-requests python3-tornado python3-decorator \
         python3-cups python3-crypto python3-lazy-object-proxy python3-psycopg2 python3-pil \
-        python-virtualenv python3-virtualenv python3-pycurl python3-dateutil && \
+        python-virtualenv python3-virtualenv python3-pycurl python3-dateutil pylint3 && \
     virtualenv --python=python3 --system-site-packages /opt/gosa && \
     useradd --home-dir /opt/gosa --user-group --system gosa && \
     mkdir -p /var/run/gosa /etc/gosa /var/lib/gosa/workflows  && \
