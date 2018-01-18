@@ -15,7 +15,7 @@ before_install:
 
     if [ "$TRAVIS_BRANCH" == "master" ]; then
       TAG="$container:latest"
-    elsif [ "$TRAVIS_TAG" != "" ]; then
+    elif [ "$TRAVIS_TAG" != "" ]; then
       TAG="$container:$TRAVIS_TAG"
     fi
 
