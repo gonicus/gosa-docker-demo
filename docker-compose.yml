@@ -2,7 +2,7 @@ version: '2.2'
 
 services:
   gosa:
-    build: container/gosa
+    image: gonicus/gosa:latest
     container_name: gosa-docker
     ports:
      - "8000:8000"
@@ -17,9 +17,9 @@ services:
       - ./config/gosa:/etc/gosa
 
   openldap:
-    build: container/openldap
-    restart: always
+    image: gonicus/openldap:latest
     container_name: openldap-docker
+    restart: always
     networks:
      - backbone
     ports:
@@ -45,7 +45,7 @@ services:
       - "5432:5432"
 
   cups:
-    build: container/cups
+    image: gonicus/cups:latest
     container_name: cups-docker
     networks:
      - backbone
@@ -56,7 +56,7 @@ services:
       - "8631:8631"
 
   mqtt:
-    build: container/mosquitto
+    image: gonicus/mosquitto:latest
     container_name: mqtt-docker
     restart: always
     networks:
