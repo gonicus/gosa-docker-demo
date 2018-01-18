@@ -14,7 +14,7 @@ before_install:
 install:
   - |
     if [ "$TRAVIS_BRANCH" == "master" -o "$TRAVIS_TAG" != "" ]; then
-      for container in containers/*; do
+      for container in container/*; do
         TAG=""
 
         if [ "$TRAVIS_BRANCH" == "master" ]; then
@@ -30,7 +30,7 @@ install:
 after_success:
   - |
     if [ "$TRAVIS_BRANCH" == "master" -o "$TRAVIS_TAG" != "" ]; then
-      for container in containers/*; do
+      for container in container/*; do
         TAG=""
 
         if [ "$TRAVIS_BRANCH" == "master" ]; then
