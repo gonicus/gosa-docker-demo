@@ -39,7 +39,7 @@ after_success:
           TAG="$(basename $container):$TRAVIS_TAG"
         fi
 
-        docker tag $TAG $DOCKER_USERNAME/$TAG
-        docker push $DOCKER_USERNAME/$TAG
+        docker tag $TAG gonicus/$TAG
+        docker push gonicus/$TAG
       done
     fi
